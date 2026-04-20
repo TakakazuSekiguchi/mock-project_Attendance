@@ -1,0 +1,124 @@
+.content {
+    width: 80%;
+    margin: 0 auto;
+}
+
+.form__group {
+    background-color: #fff;
+    border-radius: 6px;
+}
+
+.form__row {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    height: 60px;
+    /* border-bottom: 1.5px solid #ddd; */
+    /* background-color: red; */
+}
+
+.form__row:not(:last-child) {
+    border-bottom: 1.5px solid #ddd;
+}
+
+.form__group-title {
+    /* background-color: yellow; */
+    width: 30%;
+    margin: 10px;
+    margin-left: 30px;
+}
+
+.form__group-content {
+    /* background-color: blue; */
+    width: 70%;
+    margin: 10px;
+}
+
+/* .form__input-text {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+} */
+
+input.form__input-left , .form__input-right {
+    text-align: center;
+}
+
+.form__text {
+    margin: 50px;
+    width: 300px;
+    /* background-color: yellow; */
+}
+
+.form__text-name {
+    margin: 0px;
+}
+
+.form__text-left {
+    margin-left: 30px;
+    margin-right: 60px;
+    /* width: 150px; */
+}
+
+.form__text-right {
+    margin-left: 90px;
+    /* width: 150px; */
+}
+
+.form__input-left {
+    margin-right: 40px;
+    width: 100px;
+}
+
+.form__input-right {
+    margin-left: 40px;
+    width: 100px;
+}
+
+.reason_textarea {
+    width: 300px;
+}
+
+.form__button {
+    margin-top: 20px;
+    text-align: right;
+}
+
+.form__button-submit {
+    padding: 5px;
+    margin-bottom: 10px;
+    width: 80px;
+    height: 35px;
+    border: none;
+    border-radius: 3px;
+    background: #000;
+    color: #fff;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.form__button-submit-approved {
+    padding: 5px;
+    margin-bottom: 10px;
+    width: 80px;
+    height: 35px;
+    border: none;
+    border-radius: 3px;
+    background: #686868;
+    color: #fff;
+    font-size: 15px;
+}
+
+.pendingApproval__parent {
+    display: flex;
+    justify-content: right;
+}
+
+.pendingApproval {
+    color: red;
+}
+
+.form__error {
+    color: red;
+    font-size: 12px;
+}

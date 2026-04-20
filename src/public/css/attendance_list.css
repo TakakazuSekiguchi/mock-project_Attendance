@@ -1,0 +1,68 @@
+.content {
+    width: 80%;
+    margin: 0 auto;
+}
+
+.month_select-group, .date_select-group {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #fff;
+    height: 50px;
+    padding: 10px;
+    border-radius: 6px;
+}
+
+.thisMonth, .thisDate {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+/* table {
+    table-layout: fixed;
+    width: 100%;
+}
+
+th,
+td {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+} */
+
+.attendance__table {
+    margin-top: 30px;
+    width: 100%;
+    background-color: #fff;
+    border-radius: 6px;
+    margin-bottom: 40px;
+}
+
+.attendance__table-list {
+    display: flex;
+    justify-content: space-between;
+    width: 100%; 
+    padding: 5px;
+    border-bottom: 1.5px solid #ddd;
+}
+
+.csv__button {
+    /* margin-top: 20px; */
+    text-align: right;
+}
+
+.csv__button-submit {
+    display: inline-block;
+    text-align: center;
+    padding: 5px;
+    margin-bottom: 40px;
+    width: 120px;
+    height: 40px;
+    border: none;
+    border-radius: 3px;
+    background: #000;
+    color: #fff;
+    font-size: 17px;
+    text-decoration: none;
+    cursor: pointer;
+}
