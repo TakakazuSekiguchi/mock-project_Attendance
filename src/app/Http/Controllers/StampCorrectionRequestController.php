@@ -17,21 +17,19 @@ class StampCorrectionRequestController extends Controller
 {
     //共通化
     protected function prepareIndexData(Request $request): array
-    {        
+    {
         $pendingApproval_query = StampCorrectionRequest::query();
         $approved_query = StampCorrectionRequest::query();
         
         if (auth('admin')->check()) {
             // 管理者
             // 承認待ちの申請
-            $pendingApproval_requests = $pendingApproval_query->with('user')
-                ->with('attendance')
+            $pendingApproval_requests = $pendingApproval_query->with('attendance.user')
                 ->where('status', 0)
                 ->get();
 
             // 承認済みの申請
-            $approved_requests = $approved_query->with('user')
-                ->with('attendance')
+            $approved_requests = $approved_query->with('attendance.user')
                 ->where('status', 1)
                 ->get();
 
@@ -39,16 +37,18 @@ class StampCorrectionRequestController extends Controller
             
             // 一般ユーザー
             // 承認待ちの申請
-            $pendingApproval_requests = $pendingApproval_query->with('user')
-                ->with('attendance')
-                ->where('user_id', auth('web')->id())
+            $pendingApproval_requests = $pendingApproval_query->with('attendance.user')
+                ->wherehas('attendance', function ($q){
+                    $q->where('user_id', auth('web')->id());
+                })
                 ->where('status', 0)
                 ->get();
 
             // 承認済みの申請
-            $approved_requests = $approved_query->with('user')
-                ->with('attendance')
-                ->where('user_id', auth('web')->id())
+            $approved_requests = $approved_query->with('attendance.user')
+                ->wherehas('attendance', function ($q){
+                    $q->where('user_id', auth('web')->id());
+                })
                 ->where('status', 1)
                 ->get();
         }
@@ -88,27 +88,26 @@ class StampCorrectionRequestController extends Controller
         }
 
         return view('request_list', compact('pendingApproval_requests', 'approved_requests', 'defaultTab', 'pendingApproval_dates', 'approved_dates'));
-    } 
+    }
 
     public function list_approved(Request $request){
         [$pendingApproval_requests, $approved_requests, $defaultTab] = $this->prepareIndexData($request);
         return redirect()->route('stamp_correction_request.list', ['tab' => 'approved']);
     }
 
+    //修正申請承認画面（管理者）
     public function show(StampCorrectionRequest $stampCorrectionRequest){    
         $stampCorrectionRequest = StampCorrectionRequest::with('breakRequestDetails')
-            ->with('user')
+            ->with('attendance.user')
             ->find($stampCorrectionRequest->id);
         
         $dt = Carbon::parse($stampCorrectionRequest->after_clock_in);        
         $targetWorkDate = $dt->copy();
 
-        // $date = [];
         $year = $targetWorkDate->year;
         $month = $targetWorkDate->month;
         $day = $targetWorkDate->day;
         $target_date = $targetWorkDate->format('Y-m-d');
-        // array_push($date, 'year', 'month', 'day');
 
         $pendingApproval_clock_in = '';
         $pendingApproval_clock_out = '';
@@ -166,7 +165,6 @@ class StampCorrectionRequestController extends Controller
             ]);
 
             foreach ($stampCorrectionRequest->breakRequestDetails ?? [] as $index => $breakInput) {
-
                 $after_start = Carbon::parse($breakInput['after_start']);        
                 $after_end = Carbon::parse($breakInput['after_end']);   
 

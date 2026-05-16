@@ -27,54 +27,48 @@
     </div>
     <table class="attendance__table">
         <tr class="attendance__table-list">
-            <th class="attendance__table-list-th">日付</th>
-            <th class="attendance__table-list-th">出勤</th>
-            <th class="attendance__table-list-th">退勤</th>
-            <th class="attendance__table-list-th">休憩</th>
-            <th class="attendance__table-list-th">合計</th>
-            <th class="attendance__table-list-th">詳細</th>
+            <th>日付</th>
+            <th>出勤</th>
+            <th>退勤</th>
+            <th>休憩</th>
+            <th>合計</th>
+            <th>詳細</th>
         </tr>
         @foreach($attendanceDates as $attendanceDate)
-            <tr class="attendance__table-list">
-                <td>{{ $attendanceDate['work_date']."(".$attendanceDate['week'].")" }}</td>
-                <td>
-                    {{ 
-                        $attendanceDate['attendance_id'] && $attendanceDate['clock_in']
-                            ? \Carbon\Carbon::parse($attendanceDate['clock_in'])->format('H:i')
-                            : ''
-                    }}
-                </td>
-                <td>
-                    {{ 
-                        $attendanceDate['attendance_id'] && $attendanceDate['clock_out']
-                            ? \Carbon\Carbon::parse($attendanceDate['clock_out'])->format('H:i')
-                            : ''
-                    }}
-                <td/> 
-                <td>
-                    {{ $attendanceDate['attendance_id'] ? sprintf('%02d:%02d', floor($attendanceDate['totalBreak'] / 60), $attendanceDate['totalBreak'] % 60) : '' }}
-                </td>
-                <td>
-                    {{ $attendanceDate['attendance_id'] ? sprintf('%02d:%02d', floor($attendanceDate['totalTime'] / 60), $attendanceDate['totalTime'] % 60) : '' }}
-                </td>
+        <tr class="attendance__table-list">
+            <td>{{ $attendanceDate['work_date']."(".$attendanceDate['week'].")" }}</td>
+            <td>
+                {{ 
+                    $attendanceDate['attendance_id'] && $attendanceDate['clock_in']
+                        ? \Carbon\Carbon::parse($attendanceDate['clock_in'])->format('H:i')
+                        : ''
+                }}
+            </td>
+            <td>
+                {{ 
+                    $attendanceDate['attendance_id'] && $attendanceDate['clock_out']
+                        ? \Carbon\Carbon::parse($attendanceDate['clock_out'])->format('H:i')
+                        : ''
+                }}
+            </td>
+            <td>
+                {{ $attendanceDate['attendance_id'] ? sprintf('%02d:%02d', floor($attendanceDate['totalBreak'] / 60), $attendanceDate['totalBreak'] % 60) : '' }}
+            </td>
+            <td>
+                {{ $attendanceDate['attendance_id'] ? sprintf('%02d:%02d', floor($attendanceDate['totalTime'] / 60), $attendanceDate['totalTime'] % 60) : '' }}
+            </td>
+            <td>
+            @if($attendanceDate['attendance_id'])
                 @auth('admin')
-                    @if($attendanceDate['attendance_id'])
-                        <td>
-                            <a href="{{ route('admin.attendance_detail', $attendanceDate['attendance_id']) }}">詳細</a>
-                        </td>
-                    @else
-                        <td>詳細</td>
-                    @endif
+                    <a href="{{ route('admin.attendance_detail', $attendanceDate['attendance_id']) }}">詳細</a>
                 @elseauth('web')
-                    @if($attendanceDate['attendance_id'])
-                        <td>
-                            <a href="{{ route('attendance.detail', $attendanceDate['attendance_id']) }}">詳細</a>
-                        </td>
-                    @else
-                        <td>詳細</td>
-                    @endif
+                    <a href="{{ route('attendance.detail', $attendanceDate['attendance_id']) }}">詳細</a>
                 @endauth
-            </tr>
+            @else
+                詳細
+            @endif
+            </td>
+        </tr>
         @endforeach
     </table>
     @auth('admin')

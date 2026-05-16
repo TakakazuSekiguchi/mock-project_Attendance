@@ -25,7 +25,6 @@
                 @csrf
                 <button class="form__button-clockIn"submit">出勤</button>
             </form>
-
         @elseif ($attendance->status === 'working')
             <form method="POST" action="{{ route('attendance.clockOut') }}">
                 @csrf
@@ -35,13 +34,11 @@
                 @csrf
                 <button class="form__button-break" type="submit">休憩入</button>
             </form>
-
         @elseif ($attendance->status === 'on_break')
             <form method="POST" action="{{ route('attendance.breakEnd') }}">
                 @csrf
                 <button class="form__button-break" type="submit">休憩戻</button>
             </form>
-
         @elseif ($attendance->status === 'finished')
             <p>お疲れ様でした。</p>
         @endif

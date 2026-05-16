@@ -22,12 +22,12 @@
     </div>
     <table class="attendance__table">
         <tr class="attendance__table-list">
-            <th class="attendance__table-list-th">名前</th>
-            <th class="attendance__table-list-th">出勤</th>
-            <th class="attendance__table-list-th">退勤</th>
-            <th class="attendance__table-list-th">休憩</th>
-            <th class="attendance__table-list-th">合計</th>
-            <th class="attendance__table-list-th">詳細</th>
+            <th>名前</th>
+            <th>出勤</th>
+            <th>退勤</th>
+            <th>休憩</th>
+            <th>合計</th>
+            <th>詳細</th>
         </tr>
         @foreach($attendances as $attendance)
             @php
@@ -52,7 +52,7 @@
                 </td>
                 <td>
                     {{ $attendance?->clock_out?->format('H:i') ?? '' }}
-                <td/> 
+                </td> 
                 <td>
                     {{ $attendance ? sprintf('%02d:%02d', floor($totalBreak / 60), $totalBreak % 60) : '' }}
                 </td>

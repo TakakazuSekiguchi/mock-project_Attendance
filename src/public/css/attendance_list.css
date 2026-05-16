@@ -18,32 +18,25 @@
     font-weight: bold;
 }
 
-/* table {
-    table-layout: fixed;
-    width: 100%;
-}
-
-th,
-td {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-} */
-
 .attendance__table {
     margin-top: 30px;
     width: 100%;
     background-color: #fff;
     border-radius: 6px;
     margin-bottom: 40px;
+    table-layout: fixed;
+    border-collapse: collapse;
+    padding: 5px;
 }
 
 .attendance__table-list {
-    display: flex;
-    justify-content: space-between;
-    width: 100%; 
-    padding: 5px;
     border-bottom: 1.5px solid #ddd;
+}
+
+th,
+td {
+    padding: 10px 15px;
+    text-align: center;
 }
 
 .csv__button {

@@ -31,23 +31,12 @@
 .form__group-content {
     /* background-color: blue; */
     width: 70%;
-    margin: 10px;
+    /* margin: 10px; */
 }
 
-/* .form__input-text {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-} */
-
-input.form__input-left , .form__input-right {
+input.form__input-left,
+.form__input-right {
     text-align: center;
-}
-
-.form__text {
-    margin: 50px;
-    width: 300px;
-    /* background-color: yellow; */
 }
 
 .form__text-name {
@@ -55,7 +44,7 @@ input.form__input-left , .form__input-right {
 }
 
 .form__text-left {
-    margin-left: 30px;
+    /* margin-left: 30px; */
     margin-right: 60px;
     /* width: 150px; */
 }
@@ -63,6 +52,24 @@ input.form__input-left , .form__input-right {
 .form__text-right {
     margin-left: 90px;
     /* width: 150px; */
+}
+
+.form__text-first {
+    margin-right: 70px;
+    width: 300px;
+    /* background-color: yellow; */
+}
+
+.form__text-last {
+    margin: 70px;
+    width: 300px;
+    /* background-color: yellow; */
+}
+
+.form__text {
+    /* margin: 60px; */
+    width: 300px;
+    /* background-color: yellow; */
 }
 
 .form__input-left {

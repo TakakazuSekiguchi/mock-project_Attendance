@@ -15,7 +15,6 @@ class CreateStampCorrectionRequestsTable extends Migration
     {
         Schema::create('stamp_correction_requests', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->integer('status');
             $table->text('reason');
             $table->foreignId('attendance_id')->nullable()->constrained()->cascadeOnDelete();

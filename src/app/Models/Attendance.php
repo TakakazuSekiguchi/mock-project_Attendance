@@ -57,9 +57,12 @@ class Attendance extends Model
     }
 
     // スコープ：今日の出勤レコードを取得
-    public function scopeToday($query, $userId)
+    public function scopeTodayByUser($query, $userId)
     {
         return $query->where('user_id', $userId)
-            ->whereDate('clock_in', today());
+            ->whereBetween('clock_in', [
+                now()->startOfDay(),
+                now()->endOfDay()
+            ]);
     }
 }

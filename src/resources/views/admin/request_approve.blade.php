@@ -16,7 +16,7 @@
                     <span class="form__label-item">名前</span>
                 </div>
                 <div class="form__group-content">
-                    <span class="form__text-name">{{ $stampCorrectionRequest->user->name ?? '' }}</span>
+                    <span class="form__text-name">{{ $stampCorrectionRequest->attendance->user->name ?? '' }}</span>
                     <input type="hidden" name="stampCorrectionRequest_id" value="{{ $stampCorrectionRequest?->id }}">
                 </div>
             </div>
@@ -25,10 +25,8 @@
                     <span class="form__label-item">日付</span>
                 </div>
                 <div class="form__group-content">
-                    <div class="form__input-text">
-                        <span class="form__text-left">{{ $year."年" }}</span>
-                        <span class="form__text-right">{{ $month."月".$day."日" }}</span>
-                    </div>
+                    <span class="form__text-left">{{ $year."年" }}</span>
+                    <span class="form__text-right">{{ $month."月".$day."日" }}</span>
                 </div>
             </div>
             <div class="form__row">
@@ -36,11 +34,9 @@
                     <span class="form__label-item">出勤・退勤</span>
                 </div>
                 <div class="form__group-content">
-                    <div class="form__input-text">
-                        <span class="form__text">{{ $pendingApproval_clock_in }}</span>
-                        <span>～</span>
-                        <span class="form__text">{{ $pendingApproval_clock_out }}</span>
-                    </div>
+                    <span class="form__text-first">{{ $pendingApproval_clock_in }}</span>
+                    <span>～</span>
+                    <span class="form__text-last">{{ $pendingApproval_clock_out }}</span>
                 </div>
             </div>
             @php
@@ -55,11 +51,9 @@
                     <span class="form__label-item">休憩{{ $count }}</span>
                 </div>
                 <div class="form__group-content">
-                    <div class="form__input-text">
-                        <span class="form__text">{{ $pendingApproval_break['pendingApproval_break_start'] }}</span>
-                        <span>～</span>
-                        <span class="form__text">{{ $pendingApproval_break['pendingApproval_break_end'] }}</span>
-                    </div>
+                    <span class="form__text-first">{{ $pendingApproval_break['pendingApproval_break_start'] }}</span>
+                    <span>～</span>
+                    <span class="form__text-last">{{ $pendingApproval_break['pendingApproval_break_end'] }}</span>
                 </div>
             </div>
             @endforeach
@@ -68,9 +62,7 @@
                     <span class="form__label-item">備考</span>
                 </div>
                 <div class="form__group-content">
-                    <div class="form__input-text">
-                        <div class="form__text">{{ $stampCorrectionRequest->reason }}</div>
-                    </div>
+                    <div class="form__text">{{ $stampCorrectionRequest->reason }}</div>
                 </div>
             </div>
         </div>
