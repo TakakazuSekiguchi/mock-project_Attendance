@@ -18,7 +18,7 @@
             <span class="month_select">前月</span>
         </a>
         <div>
-            <span class="thisMonth">{{ $month }}</span>
+            <span class="thisMonth">{{ \Carbon\Carbon::parse($month)->format('Y/m') }}</span>
         </div>
         <a class="month_select-link" href="?month={{ \Carbon\Carbon::parse($month)->addMonth()->format('Y-m') }}">
             <span class="month_select">翌月</span>

@@ -17,13 +17,14 @@ class AttendanceController extends Controller
     public function index(){
         $dt = Carbon::now();
 
-        $year = $dt->year;
-        $month = $dt->month;
-        $day = $dt->day;
+        // $year = $dt->year;
+        // $month = $dt->month;
+        // $day = $dt->day;
         $time = $dt->format('H:i');
         $week = $dt->isoFormat('ddd');
 
-        $today = $year ."年". $month ."月". $day ."日(". $week .")";
+        // $today = $year ."年". $month ."月". $day ."日(". $week .")";
+        $today = $dt->format('Y年m月d日')."(". $week .")";
 
         $attendance = Attendance::todayByUser(auth()->id())->first();
 

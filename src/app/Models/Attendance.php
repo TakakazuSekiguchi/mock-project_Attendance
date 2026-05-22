@@ -47,7 +47,10 @@ class Attendance extends Model
             return 'finished';
         }
 
-        $latestBreak = $this->breakTimes()->latest()->first();
+        // 最新のbreak_startで降順した状態
+        $latestBreak = $this->breakTimes()
+            ->latest('break_start')
+            ->first();
 
         if ($latestBreak && !$latestBreak->break_end) {
             return 'on_break';
