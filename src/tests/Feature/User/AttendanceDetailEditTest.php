@@ -171,11 +171,7 @@ class AttendanceDetailEditTest extends TestCase
         );
 
         // コントローラー側で作成されたStampCorrectionRequestを変数に格納
-        $stampCorrectionRequest = StampCorrectionRequest::where(
-                'reason',
-                '電車遅延のため'
-            )->first();
-
+        $stampCorrectionRequest = StampCorrectionRequest::where('reason', '電車遅延のため')->first();
         $this->assertNotNull($stampCorrectionRequest);
 
         // DBに修正内容が登録されているか確認
@@ -305,18 +301,16 @@ class AttendanceDetailEditTest extends TestCase
 
     public function test_「承認済み」に管理者が承認した修正申請が全て表示されている()
     {
-        // 勤怠データを作成（ユーザー1の修正申請）
-        $user1 = User::factory()->create([
-            'name' => 'ユーザー1',
-        ]);
+        $user = User::factory()->create();
 
+        // 勤怠データを作成（1つ目の修正申請）
         $attendance1 = Attendance::factory()->create([
-            'user_id' => $user1->id,
+            'user_id' => $user->id,
             'clock_in' => '2026-05-20 09:00:00',
             'clock_out' => '2026-05-20 18:00:00',
         ]);
 
-        $response1 = $this->actingAs($user1)
+        $response1 = $this->actingAs($user)
             ->get(route('attendance.detail', $attendance1));
 
         // 勤怠詳細を修正＆申請
@@ -330,8 +324,8 @@ class AttendanceDetailEditTest extends TestCase
             ]
         );
 
-        $response1->assertRedirect();
-        // $response->assertSessionHasNoErrors();
+        $stampCorrectionRequest1 = StampCorrectionRequest::where('reason', '電車遅延のため')->first();
+        $this->assertNotNull($stampCorrectionRequest1);
 
         // DBに修正内容が登録されているか確認
         $this->assertDatabaseHas(
@@ -342,24 +336,14 @@ class AttendanceDetailEditTest extends TestCase
             ]
         );
 
-        $stampCorrectionRequest1 = StampCorrectionRequest::factory()->create([
-            'after_clock_in' => '2026-05-20 10:00:00',
-            'after_clock_out' => '2026-05-20 18:00:00',
-            'reason' => '電車遅延のため',
-        ]);
-
-        // 勤怠データを作成（ユーザー2の修正申請）
-        $user2 = User::factory()->create([
-            'name' => 'ユーザー2',
-        ]);
-
+        // 勤怠データを作成（2つ目の修正申請）
         $attendance2 = Attendance::factory()->create([
-            'user_id' => $user2->id,
+            'user_id' => $user->id,
             'clock_in' => '2026-05-22 09:30:00',
             'clock_out' => null,
         ]);
 
-        $response2 = $this->actingAs($user2)
+        $response2 = $this->actingAs($user)
             ->get(route('attendance.detail', $attendance2));
 
         $response2 = $this->post(
@@ -372,7 +356,8 @@ class AttendanceDetailEditTest extends TestCase
             ]
         );
 
-        $response2->assertRedirect();
+        $stampCorrectionRequest2 = StampCorrectionRequest::where('reason', '打刻漏れのため')->first();
+        $this->assertNotNull($stampCorrectionRequest2);
 
         $this->assertDatabaseHas(
             'stamp_correction_requests',
@@ -381,12 +366,6 @@ class AttendanceDetailEditTest extends TestCase
                 'reason' => '打刻漏れのため',
             ]
         );
-
-        $stampCorrectionRequest2 = StampCorrectionRequest::factory()->create([
-            'after_clock_in' => '2026-05-22 09:30:00',
-            'after_clock_out' => '2026-05-22 19:00:00',
-            'reason' => '打刻漏れのため',
-        ]);
 
         // 管理者ユーザーを作成
         $adminuser = Admin::factory()->create();
@@ -397,7 +376,7 @@ class AttendanceDetailEditTest extends TestCase
         // 管理者ログイン成功している
         $this->assertAuthenticatedAs($adminuser, 'admin');
 
-        // 修正申請承認画面（管理者）に遷移し、それぞれのユーザーの修正申請を承認
+        // 修正申請承認画面（管理者）に遷移し、それぞれの修正申請を承認
         $this->from('/admin/login')->patch(
             route('admin.approved', $stampCorrectionRequest1->id),
             [
@@ -418,8 +397,8 @@ class AttendanceDetailEditTest extends TestCase
             ]
         );
 
-        // 申請一覧画面（管理者）に遷移
-        $approvalResponse = $this->from('/admin/login')
+        // 申請一覧画面（一般ユーザー）に遷移
+        $approvalResponse = $this->actingAs($user)
             ->get(route('stamp_correction_request.list'));
 
         $approvalResponse->assertStatus(200);
@@ -461,7 +440,8 @@ class AttendanceDetailEditTest extends TestCase
             ]
         );
 
-        $response->assertRedirect();
+        $stampCorrectionRequest = StampCorrectionRequest::where('reason', '電車遅延のため')->first();
+        $this->assertNotNull($stampCorrectionRequest);
 
         // DBに修正内容が登録されているか確認
         $this->assertDatabaseHas(
@@ -471,12 +451,6 @@ class AttendanceDetailEditTest extends TestCase
                 'reason' => '電車遅延のため',
             ]
         );
-
-        $stampCorrectionRequest = StampCorrectionRequest::factory()->create([
-            'after_clock_in' => '2026-05-20 10:00:00',
-            'after_clock_out' => '2026-05-20 18:00:00',
-            'reason' => '電車遅延のため',
-        ]);
 
         // 申請一覧画面（一般ユーザー）に遷移
         $approvalResponse = $this->actingAs($user)
