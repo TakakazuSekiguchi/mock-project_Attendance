@@ -98,7 +98,6 @@ class AttendanceDetailController extends Controller
             $after_clock_out,
         ) {
             $createdStampCorrectionRequest = StampCorrectionRequest::Create([
-                // 'user_id' => auth()->id(),
                 'status' => 0,
                 'reason' => $request->reason,
                 'attendance_id' => $attendance->id,

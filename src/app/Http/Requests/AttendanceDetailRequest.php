@@ -26,16 +26,26 @@ class AttendanceDetailRequest extends FormRequest
     {
         // dd('rules通過');
         return [
-            'clock_in' => ['required', 'date_format:H:i'],
+            'clock_in' => ['required', 'date_format:H:i', 'before:clock_out'],
             'clock_out' => ['required', 'date_format:H:i', 'after:clock_in'],
 
             //bladeでforeachで記述している箇所のバリデーション
             'breaks' => ['array'],
-            'breaks.*.start' => ['required', 'date_format:H:i'],
+            'breaks.*.start' => [
+                    'required', 
+                    'date_format:H:i', 
+                    'after:clock_in', 
+                    'before:clock_out'
+                ],
             'breaks.*.end'   => ['required', 'date_format:H:i'],
 
             //予備の休憩記入箇所のバリデーション
-            'break_start' => ['nullable', 'date_format:H:i'],
+            'break_start' => [
+                    'nullable', 
+                    'date_format:H:i', 
+                    'after:clock_in', 
+                    'before:clock_out'
+                ],
             'break_end' => ['nullable', 'date_format:H:i'],
 
             'reason' => ['required', 'max:20']
@@ -47,15 +57,26 @@ class AttendanceDetailRequest extends FormRequest
         return [
             'clock_in.required' => '出勤時刻を入力してください',
             'clock_in.date_format' => '出勤時刻は時刻形式で入力してください',
+            'clock_in.before' => '出勤時間もしくは退勤時間が不適切な値です',
+
             'clock_out.required' => '退勤時刻を入力してください',
             'clock_out.date_format' => '退勤時刻は時刻形式で入力してください',
             'clock_out.after' => '出勤時間もしくは退勤時間が不適切な値です',
+
             'breaks.*.start.required' => '休憩開始時刻を入力してください',
+            'breaks.*.start.after' => '休憩時間が不適切な値です',
+            'breaks.*.start.before' => '休憩時間が不適切な値です',
             'breaks.*.start.date_format' => '休憩開始時刻は時刻形式で入力してください',
+
             'breaks.*.end.required' => '休憩終了時刻を入力してください',
             'breaks.*.end.date_format' => '休憩終了時刻は時刻形式で入力してください',
+
+            'break_start.after' => '休憩時間が不適切な値です',
+            'break_start.before' => '休憩時間が不適切な値です',
             'break_start.date_format' => '休憩開始時刻は時刻形式で入力してください',
+
             'break_end.date_format' => '休憩終了時刻は時刻形式で入力してください',
+
             'reason.required' => '備考を記入してください',
             'reason.max' => '備考は、20文字以内で入力してください',
         ];

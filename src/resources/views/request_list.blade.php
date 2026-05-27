@@ -28,9 +28,9 @@
                 <tr>
                     <td>承認待ち</td>
                     <td>{{ $pendingApproval_request->attendance->user->name }}</td>
-                    <td>{{ $pendingApproval_dates[$i]['after_clock_in'] }}</td>
+                    <td>{{ \Carbon\Carbon::parse($pendingApproval_dates[$i]['after_clock_in'])->format('Y/m/d') }}</td>
                     <td>{{ $pendingApproval_request->reason }}</td>
-                    <td>{{ $pendingApproval_dates[$i]['created_at'] }}</td>
+                    <td>{{ \Carbon\Carbon::parse($pendingApproval_dates[$i]['created_at'])->format('Y/m/d') }}</td>
                     <td>
                     @auth('admin')
                         <a href="{{ route('admin.request_approve', $pendingApproval_request->id) }}">詳細</a>
@@ -65,9 +65,9 @@
                 <tr>
                     <td>承認済み</td>
                     <td>{{ $approved_request->attendance->user->name }}</td>
-                    <td>{{ $approved_dates[$i]['after_clock_in'] }}</td>
+                    <td>{{ \Carbon\Carbon::parse($approved_dates[$i]['after_clock_in'])->format('Y/m/d') }}</td>
                     <td>{{ $approved_request->reason }}</td>
-                    <td>{{ $approved_dates[$i]['created_at'] }}</td>
+                    <td>{{ \Carbon\Carbon::parse($approved_dates[$i]['created_at'])->format('Y/m/d') }}</td>
                     <td>
                     @auth('admin')
                         <a href="{{ route('admin.request_approve', $approved_request->id) }}">詳細</a>

@@ -18,6 +18,7 @@
             <span class="month_select">前月</span>
         </a>
         <div>
+            <img class="calendar__img" src="{{ asset('images/カレンダーアイコン8.jpeg') }}">
             <span class="thisMonth">{{ \Carbon\Carbon::parse($month)->format('Y/m') }}</span>
         </div>
         <a class="month_select-link" href="?month={{ \Carbon\Carbon::parse($month)->addMonth()->format('Y-m') }}">
@@ -36,7 +37,12 @@
         </tr>
         @foreach($attendanceDates as $attendanceDate)
         <tr class="attendance__table-list">
-            <td>{{ $attendanceDate['work_date']."(".$attendanceDate['week'].")" }}</td>
+            <td>
+                {{ 
+                    \Carbon\Carbon::parse($attendanceDate['work_date'])
+                        ->format('m/d')."(".$attendanceDate['week'].")"
+                 }}
+            </td>
             <td>
                 {{ 
                     $attendanceDate['attendance_id'] && $attendanceDate['clock_in']

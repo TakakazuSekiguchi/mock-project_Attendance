@@ -13,6 +13,24 @@
     border-radius: 6px;
 }
 
+.month_select-link, .date_select-link {
+    text-decoration: none;
+    color: #8e8a8a;
+}
+
+.month_select, date_select {
+    font-weight: bold;
+}
+
+.month_select-arrow, .date_select-arrow {
+    font-weight: bold;
+}
+
+.calendar__img {
+    width: 30px;
+    margin-right: 5px;
+}
+
 .thisMonth, .thisDate {
     font-size: 20px;
     font-weight: bold;

@@ -13,9 +13,10 @@
             <span class="date_select">前日</span>
         </a>
         <div>
+            <img class="calendar__img" src="{{ asset('images/カレンダーアイコン8.jpeg') }}">
             <span class="thisDate">{{ $date }}</span>
         </div>
-        <a class="month_select-link" href="?date={{ \Carbon\Carbon::parse($date)->addDay()->format('Y-m-d') }}">
+        <a class="date_select-link" href="?date={{ \Carbon\Carbon::parse($date)->addDay()->format('Y-m-d') }}">
             <span class="date_select">翌日</span>
             <span class="date_select-arrow">→</span>
         </a>

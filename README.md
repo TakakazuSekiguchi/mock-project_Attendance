@@ -1,6 +1,7 @@
 # mock-project_Attendance
 
 ## 概要
+Laravelを用いて開発した勤怠アプリです。<br>
 
 ## 環境構築
 ※ Docker Desktop を起動した状態で以下の手順を実行してください。<br>
@@ -63,11 +64,11 @@ MAIL_FROM_NAME="${APP_NAME}"<br>
 - PHPUnit
 
 ## ER図
+![ER図](./index.drawio.png)
 
 ## テーブル設計方針
 
 ## ログイン情報（動作確認用アカウント）
-
 ### 管理者ユーザー
 - メールアドレス：admin@example.com
 - パスワード：admin000
@@ -128,4 +129,3 @@ docker-compose exec php php artisan test<br>
 
 ※ テストでは RefreshDatabase を使用し、各テスト実行ごとにDBをリセットしています。<br>
 
-# mock-project_Attendance

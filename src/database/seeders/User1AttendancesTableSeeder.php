@@ -22,7 +22,6 @@ class User1AttendancesTableSeeder extends Seeder
 
         // 今月を含めた直近3ヶ月分の勤怠テーブルを作成
         for ($i = 2; $i >= 0; $i--) {
-
             // 月末のずれをなくす為、subMonthsNoOverflow()を使用
             $target = $today->copy()->subMonthsNoOverflow($i);
             $startDate = $target->copy()->startOfMonth();
@@ -36,6 +35,9 @@ class User1AttendancesTableSeeder extends Seeder
 
             $user = User::where('email', 'user1@example.com')->firstOrFail();
 
+            // 初めの平日を退勤漏れとする際のif条件文で使用
+            $forgotClockOutCreated = false;
+
             for ($date = $startDate->copy(); $date->lte($endDate); $date->addDay()) {
 
                 // 土日スキップ
@@ -48,12 +50,6 @@ class User1AttendancesTableSeeder extends Seeder
 
                 // 退勤（+8〜9時間）
                 $clockOut = (clone $clockIn)->addHours(rand(8, 9));
-
-                $attendance = Attendance::create([
-                    'user_id' => $user->id,
-                    'clock_in' => $clockIn,
-                    'clock_out' => $clockOut,
-                ]);
 
                 // 休憩（出勤から2〜3時間後）
                 $breakStart = (clone $clockIn)->addHours(rand(2, 3));
@@ -69,6 +65,34 @@ class User1AttendancesTableSeeder extends Seeder
                 if ($breakEnd->gt($clockOut)) {
                     $breakEnd = (clone $clockOut)->subMinutes(30);
                 }
+
+                // 今月のみ「退勤漏れ」を作成
+                if ($i === 0){
+                    // 最初の平日のみ退勤漏れ
+                    if (!$forgotClockOutCreated) {
+                        $attendance = Attendance::create([
+                            'user_id' => $user->id,
+                            'clock_in' => $clockIn,
+                            'clock_out' => null,
+                        ]);
+
+                        BreakTime::create([
+                            'attendance_id' => $attendance->id,
+                            'break_start' => $breakStart,
+                            'break_end' => $breakEnd,
+                        ]);
+
+                        $forgotClockOutCreated = true;
+                        continue;
+                    }
+                }
+
+                // 平日の正常な勤怠
+                $attendance = Attendance::create([
+                    'user_id' => $user->id,
+                    'clock_in' => $clockIn,
+                    'clock_out' => $clockOut,
+                ]);
 
                 BreakTime::create([
                     'attendance_id' => $attendance->id,
