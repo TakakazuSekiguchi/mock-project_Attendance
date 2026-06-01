@@ -20,8 +20,8 @@ class User1AttendancesTableSeeder extends Seeder
     {
         $today = Carbon::now();
 
-        // 今月を含めた直近3ヶ月分の勤怠テーブルを作成
-        for ($i = 2; $i >= 0; $i--) {
+        // 直近3～4ヶ月分の勤怠テーブルを作成（月末に作成した場合は約4か月分が作成される）
+        for ($i = 3; $i >= 0; $i--) {
             // 月末のずれをなくす為、subMonthsNoOverflow()を使用
             $target = $today->copy()->subMonthsNoOverflow($i);
             $startDate = $target->copy()->startOfMonth();
@@ -66,8 +66,8 @@ class User1AttendancesTableSeeder extends Seeder
                     $breakEnd = (clone $clockOut)->subMinutes(30);
                 }
 
-                // 今月のみ「退勤漏れ」を作成
-                if ($i === 0){
+                // 前月のみ「退勤漏れ」を作成
+                if ($i === 1){
                     // 最初の平日のみ退勤漏れ
                     if (!$forgotClockOutCreated) {
                         $attendance = Attendance::create([
