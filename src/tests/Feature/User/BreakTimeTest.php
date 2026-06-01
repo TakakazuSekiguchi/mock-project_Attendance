@@ -37,7 +37,7 @@ class BreakTimeTest extends TestCase
         ]);
     }
 
-    public function test_休憩は一日に何回でもできる_休憩1度目(){
+    public function test_休憩は一日に何回でもできる(){
         $user = User::factory()->create();
 
         // 出勤中データ作成
@@ -103,13 +103,19 @@ class BreakTimeTest extends TestCase
         // 休憩戻ボタンを押した際の処理
         $response = $this->post('/attendance/break-end');
         $response = $this->actingAs($user)->get('attendance/');
-
+        
         $this->assertDatabaseHas('break_times', [
             'attendance_id' => $attendance->id,
         ]);
     }
 
-    public function test_休憩は一日に何回でもできる_休憩2度目(){
+    public function test_休憩戻は一日に何回でもできる(){
+
+        // 出勤時刻を指定したいので、日時を指定
+        Carbon::setTestNow(
+            Carbon::create(2026, 5, 19, 9, 0, 0)
+        );
+
         $user = User::factory()->create();
 
         // 出勤中データ作成
@@ -120,6 +126,7 @@ class BreakTimeTest extends TestCase
             ]);
         $response = $this->actingAs($user)->get('attendance/');
         $response->assertSee('休憩入');
+        // dd(Attendance::all());
 
         // 1度目の休憩入ボタンを押した際の処理
         Carbon::setTestNow(
@@ -128,6 +135,7 @@ class BreakTimeTest extends TestCase
 
         $response = $this->post('/attendance/break-start');
         $response = $this->actingAs($user)->get('attendance/');
+        // dd(BreakTime::all());
 
         $this->assertDatabaseHas('break_times', [
             'attendance_id' => $attendance->id,
@@ -141,6 +149,7 @@ class BreakTimeTest extends TestCase
         
         $response = $this->post('/attendance/break-end');
         $response = $this->actingAs($user)->get('attendance/');
+        // dd(BreakTime::all());
 
         $this->assertDatabaseHas('break_times', [
             'attendance_id' => $attendance->id,
@@ -154,6 +163,7 @@ class BreakTimeTest extends TestCase
 
         $response = $this->post('/attendance/break-start');
         $response = $this->actingAs($user)->get('attendance/');
+        // dd(BreakTime::all());
 
         // 休憩入ボタンが再び押されたので、レコードがもう一つ追加され2行になる
         $this->assertDatabaseCount('break_times', 2);
@@ -169,6 +179,11 @@ class BreakTimeTest extends TestCase
     }
 
     public function test_休憩時刻が勤怠一覧画面で確認できる(){
+
+        // 出勤時刻を指定したいので、日時を指定
+        Carbon::setTestNow(
+            Carbon::create(2026, 5, 19, 9, 0, 0)
+        );
     
         $user = User::factory()->create();
 

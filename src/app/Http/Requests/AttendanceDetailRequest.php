@@ -21,32 +21,22 @@ class AttendanceDetailRequest extends FormRequest
      * Get the validation rules that apply to the request.
      *
      * @return array
-     */
+     */    
     public function rules()
     {
         // dd('rules通過');
         return [
-            'clock_in' => ['required', 'date_format:H:i', 'before:clock_out'],
-            'clock_out' => ['required', 'date_format:H:i', 'after:clock_in'],
+            'clock_in' => ['required', 'date_format:H:i'],
+            'clock_out' => ['required', 'after:clock_in', 'date_format:H:i'],
 
             //bladeでforeachで記述している箇所のバリデーション
             'breaks' => ['array'],
-            'breaks.*.start' => [
-                    'required', 
-                    'date_format:H:i', 
-                    'after:clock_in', 
-                    'before:clock_out'
-                ],
+            'breaks.*.start' => ['required', 'date_format:H:i'],
             'breaks.*.end'   => ['required', 'date_format:H:i'],
 
             //予備の休憩記入箇所のバリデーション
-            'break_start' => [
-                    'nullable', 
-                    'date_format:H:i', 
-                    'after:clock_in', 
-                    'before:clock_out'
-                ],
-            'break_end' => ['nullable', 'date_format:H:i'],
+            'break_start' => ['nullable', 'after:clock_in', 'before:clock_out', 'date_format:H:i'],
+            'break_end' => ['nullable', 'after:clock_in', 'before:clock_out', 'date_format:H:i'],
 
             'reason' => ['required', 'max:20']
         ];
@@ -57,15 +47,12 @@ class AttendanceDetailRequest extends FormRequest
         return [
             'clock_in.required' => '出勤時刻を入力してください',
             'clock_in.date_format' => '出勤時刻は時刻形式で入力してください',
-            'clock_in.before' => '出勤時間もしくは退勤時間が不適切な値です',
 
             'clock_out.required' => '退勤時刻を入力してください',
-            'clock_out.date_format' => '退勤時刻は時刻形式で入力してください',
             'clock_out.after' => '出勤時間もしくは退勤時間が不適切な値です',
+            'clock_out.date_format' => '退勤時刻は時刻形式で入力してください',
 
             'breaks.*.start.required' => '休憩開始時刻を入力してください',
-            'breaks.*.start.after' => '休憩時間が不適切な値です',
-            'breaks.*.start.before' => '休憩時間が不適切な値です',
             'breaks.*.start.date_format' => '休憩開始時刻は時刻形式で入力してください',
 
             'breaks.*.end.required' => '休憩終了時刻を入力してください',
@@ -74,7 +61,8 @@ class AttendanceDetailRequest extends FormRequest
             'break_start.after' => '休憩時間が不適切な値です',
             'break_start.before' => '休憩時間が不適切な値です',
             'break_start.date_format' => '休憩開始時刻は時刻形式で入力してください',
-
+            'break_end.after' => '休憩時間が不適切な値です',
+            'break_end.before' => '休憩時間もしくは退勤時間が不適切な値です',
             'break_end.date_format' => '休憩終了時刻は時刻形式で入力してください',
 
             'reason.required' => '備考を記入してください',
@@ -127,7 +115,7 @@ class AttendanceDetailRequest extends FormRequest
                 if ($end->lessThanOrEqualTo($start)) {
                     $validator->errors()->add(
                         "breaks.$index.end",
-                        '休憩終了時刻は、休憩開始時刻より後にしてください'
+                        '休憩時間が不適切な値です'
                     );
                 }
 
@@ -150,6 +138,6 @@ class AttendanceDetailRequest extends FormRequest
                 // 前の休憩時刻を記録
                 $prevEnd = $end;
             }
-        });
+         });
     }
 }

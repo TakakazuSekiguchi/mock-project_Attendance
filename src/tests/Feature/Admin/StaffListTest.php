@@ -75,6 +75,8 @@ class StaffListTest extends TestCase
             'break_end' => '2026-05-20 13:00:00',
         ]);
 
+        // dd(Attendance::all());
+
         // ユーザーデータを作成（ユーザー2）
         // スタッフ一覧画面（管理者）で選択されない方
         $user2 = User::factory()->create([
@@ -93,6 +95,8 @@ class StaffListTest extends TestCase
             'break_end' => '2026-05-20 14:00:00',
         ]);
 
+        // dd(BreakTime::all());
+
         // 管理者ユーザーを作成
         $adminuser = Admin::factory()->create();
         $this->actingAs($adminuser, 'admin');
@@ -103,14 +107,14 @@ class StaffListTest extends TestCase
             ->get(route('admin.staff_list'));
 
         // ユーザー1の詳細から勤怠詳細画面（管理者）に遷移
-        $response = $this->from(route('admin.staff_list'))
+        $response = $this->from('/admin/login')
             ->get(route('admin.staff_attendance', $user1));
 
         $response->assertStatus(200);
 
         // 選択したユーザー1の表示
         $response->assertSee('ユーザー1の勤怠');
-        $response->assertSee('2026-05-20');
+        $response->assertSee('05/20');
         $response->assertSee('09:00'); // 出勤時刻
         $response->assertSee('18:00'); // 退勤時刻
         $response->assertSee('1:00'); // 休憩時間
