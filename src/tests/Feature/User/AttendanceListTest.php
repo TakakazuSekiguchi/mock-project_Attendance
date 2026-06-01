@@ -16,6 +16,11 @@ class AttendanceListTest extends TestCase
 
     public function test_自分が行った勤怠情報が全て表示されている()
     {
+        // 現在時刻を固定
+        Carbon::setTestNow(
+            Carbon::create(2026, 5, 20, 20, 30, 0)
+        );
+
         $user = User::factory()->create();
 
         // 勤怠データを作成

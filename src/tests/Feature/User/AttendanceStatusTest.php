@@ -18,7 +18,7 @@ class AttendanceStatusTest extends TestCase
 
         // 勤務外なので$attendanceを作成しない
 
-        $response = $this->actingAs($user)->get('attendance/');
+        $response = $this->actingAs($user)->get(route('attendance.index'));
 
         $response->assertSee('勤務外');
     }
@@ -33,7 +33,7 @@ class AttendanceStatusTest extends TestCase
                 'user_id' => $user->id,
             ]);
 
-        $response = $this->actingAs($user)->get('attendance/');
+        $response = $this->actingAs($user)->get(route('attendance.index'));
 
         $response->assertSee('出勤中');
     }
@@ -55,7 +55,7 @@ class AttendanceStatusTest extends TestCase
             'break_end' => null,
         ]);
 
-        $response = $this->actingAs($user)->get('attendance/');
+        $response = $this->actingAs($user)->get(route('attendance.index'));
 
         $response->assertSee('休憩中');
     }
@@ -71,7 +71,7 @@ class AttendanceStatusTest extends TestCase
                 'user_id' => $user->id,
             ]);
 
-        $response = $this->actingAs($user)->get('/attendance');
+        $response = $this->actingAs($user)->get(route('attendance.index'));
 
         $response->assertSee('退勤済');
     }

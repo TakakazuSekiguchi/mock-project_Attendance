@@ -42,7 +42,7 @@ class ClockInTest extends TestCase
                 'user_id' => $user->id,
             ]);
 
-        $response = $this->actingAs($user)->get('attendance/');
+        $response = $this->actingAs($user)->post(route('attendance.clockOut'));
 
         // 出勤ボタンが表示されていない状態
         $response->assertDontSee('出勤');
