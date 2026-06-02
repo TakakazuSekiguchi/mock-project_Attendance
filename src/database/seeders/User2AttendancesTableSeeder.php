@@ -21,7 +21,7 @@ class User2AttendancesTableSeeder extends Seeder
         $today = Carbon::now();
 
         // 直近3～4ヶ月分の勤怠テーブルを作成（月末に作成した場合は約4か月分が作成される）
-        for ($i = 2; $i >= 0; $i--) {
+        for ($i = 3; $i >= 0; $i--) {
             // 月末のずれをなくす為、subMonthsNoOverflow()を使用
             $target = $today->copy()->subMonthsNoOverflow($i);
             $startDate = $target->copy()->startOfMonth();
