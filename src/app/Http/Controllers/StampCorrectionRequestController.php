@@ -168,9 +168,16 @@ class StampCorrectionRequestController extends Controller
                 $after_start = Carbon::parse($breakInput['after_start']);        
                 $after_end = Carbon::parse($breakInput['after_end']);   
 
-                BreakTime::where('attendance_id', $stampCorrectionRequest->attendance_id)->update([
+                // attendance_idで検索するとすべて同じ内容で更新してしまうのでNG
+                // BreakTime::where('attendance_id', $stampCorrectionRequest->attendance_id)->update([
+                //     'break_start' => $after_start,
+                //     'break_end' => $after_end
+                // ]);
+
+                $breakTime = BreakTime::find($breakInput->break_time_id);
+                $breakTime->update([
                     'break_start' => $after_start,
-                    'break_end' => $after_end
+                    'break_end' => $after_end,
                 ]);
             }
         });

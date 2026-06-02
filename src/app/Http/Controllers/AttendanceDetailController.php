@@ -27,7 +27,7 @@ class AttendanceDetailController extends Controller
             ->where('attendance_id', $attendance->id)
             ->with('breakRequestDetails')
             ->first();
-        // dd($stampCorrectionRequest->reason);
+        // dd($stampCorrectionRequest);
 
         $dt = Carbon::parse($attendance->clock_in);
         $targetWorkDate = $dt->copy();
