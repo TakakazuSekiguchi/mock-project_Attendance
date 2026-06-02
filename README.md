@@ -47,11 +47,12 @@ DB_DATABASE=laravel_db<br>
 DB_USERNAME=laravel_user<br>
 DB_PASSWORD=laravel_pass<br>
 
-※「メール認証機能の設定」については後述いたしますので、<br>
-内容を確認し設定値を変更してください。<br>
+※「メール認証機能の設定」については後述いたします。<br>
 
 4. アプリキー生成<br>
 docker-compose exec php php artisan key:generate<br>
+chown -R www-data:www-data storage bootstrap/cache<br>
+chmod -R 775 storage bootstrap/cache<br>
 
 5. マイグレーション<br>
 docker-compose exec php php artisan migrate<br>
