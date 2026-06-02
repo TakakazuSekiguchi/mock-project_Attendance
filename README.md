@@ -51,8 +51,8 @@ DB_PASSWORD=laravel_pass<br>
 
 4. アプリキー生成<br>
 docker-compose exec php php artisan key:generate<br>
-chown -R www-data:www-data storage bootstrap/cache<br>
-chmod -R 775 storage bootstrap/cache<br>
+docker-compose exec php chown -R www-data:www-data storage bootstrap/cache<br>
+docker-compose exec php chmod -R 775 storage bootstrap/cache<br>
 
 5. マイグレーション<br>
 docker-compose exec php php artisan migrate<br>
